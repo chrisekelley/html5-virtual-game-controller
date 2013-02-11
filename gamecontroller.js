@@ -68,7 +68,7 @@
 	}
 	
 	// Make available to window
-	exports.GameController = {
+	var GameController = exports.GameController = {
 		
 		// Default options,
 		options: {
@@ -231,8 +231,10 @@
 			
 			var userAgent = navigator.userAgent.toLowerCase();
 			// See if we should run the performanceFriendly version (for slower CPUs)
-			this.performanceFriendly = ( userAgent.indexOf( 'iphone' ) !== -1 || userAgent.indexOf( 'android' ) !== -1 || this.options.forcePerformanceFriendly );
-			
+			this.performanceFriendly = this.options.forcePerformanceFriendly;
+			if (this.performanceFriendly == null)  {
+				this.performanceFriendly = ( userAgent.indexOf( 'iphone' ) !== -1 || userAgent.indexOf( 'android' ) !== -1);
+			}
 			// Grab the canvas if one wasn't passed
 			var ele;
 			if( !this.options.canvas || !( ele = document.getElementById( this.options.canvas ) ) )
@@ -323,7 +325,8 @@
 			{
 				this.canvas.style.width = this.options.canvas.style.width;
 				this.canvas.style.height = this.options.canvas.style.height;
-				this.pixelRatio = this.canvas.width / parseInt( this.canvas.style.width );
+				//this.pixelRatio = this.canvas.width / parseInt( this.canvas.style.width );
+				this.pixelRatio = window.devicePixelRatio;
 			}
 			
 			this.canvas.style.position = 'absolute';
